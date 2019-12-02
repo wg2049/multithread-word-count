@@ -35,10 +35,16 @@ public class MultiThreadWordCount2 {
                                 map.put(word, aDefault + 1);
                             }
                         }
-                        blockingQueue.put(map);
-                        countDownLatch.countDown();
-                    } catch (IOException | InterruptedException e) {
+
+                    } catch (IOException  e) {
                         e.printStackTrace();
+                    } finally {
+                        try {
+                            blockingQueue.put(map);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        countDownLatch.countDown();
                     }
                 }
             });

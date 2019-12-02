@@ -42,11 +42,17 @@ public class MultiThreadWordCount4 {
                                 map.put(word, aDefault + 1);
                             }
                         }
-                        blockingQueue.put(map);
-                        semaphore.release(1);
 
-                    } catch (IOException | InterruptedException e) {
+
+                    } catch (IOException  e) {
                         e.printStackTrace();
+                    } finally {
+                        try {
+                            blockingQueue.put(map);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        semaphore.release(1);
                     }
                 }
             });
